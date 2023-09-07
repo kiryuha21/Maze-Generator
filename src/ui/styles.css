@@ -1,0 +1,33 @@
+.root {
+	background: whitesmoke;
+}
+
+.header {
+	font-size: 30px;
+	margin-bottom: 20px;
+}
+
+.option-contents {
+	margin: 10px;
+}
+
+.option-labels {
+	font-size: 18px;
+}
+
+.load-button {
+	font-size: 16px;
+	border-radius: 10px;
+}
+
+.error_label {
+	color: red;
+	min-height: 30px;
+}
+
+.action-button {
+	margin: 10px;
+	min-width: 200px;
+	border-radius: 10px;
+	font-size: 18px;
+}

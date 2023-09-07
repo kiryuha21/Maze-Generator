@@ -1,0 +1,8 @@
+#ifndef INC_3D_VIEWER_TEMPLATE_GENERATIONMODEL_H
+#define INC_3D_VIEWER_TEMPLATE_GENERATIONMODEL_H
+
+namespace s21 {
+class GenerationModel {};
+}  // namespace s21
+
+#endif  // INC_3D_VIEWER_TEMPLATE_GENERATIONMODEL_H
