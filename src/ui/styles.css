@@ -31,7 +31,15 @@
 
 .action-button {
 	margin: 10px;
-	min-width: 150px;
+	min-width: 130px;
 	border-radius: 10px;
 	font-size: 18px;
 }
+
+.filename-entry {
+	margin: 10px;
+	min-width: 250px;
+	border-radius: 10px;
+	font-size: 18px;
+}
+

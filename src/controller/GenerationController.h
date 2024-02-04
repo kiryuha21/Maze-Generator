@@ -6,8 +6,11 @@
 namespace s21 {
 class GenerationController {
  public:
-  GenerationController();
+  GenerationController() = default;
   ~GenerationController();
+
+  void regenerate_map(int rows, int cols);
+  void save_map(const std::string& filename) const;
 
  private:
   GenerationModel* model_ = nullptr;

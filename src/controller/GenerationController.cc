@@ -1,10 +1,15 @@
 #include "GenerationController.h"
 
 namespace s21 {
-GenerationController::GenerationController() {
-  // TODO : move out from constructor and remove 1, 1
-  model_ = new GenerationModel(1, 1);
+GenerationController::~GenerationController() { delete model_; }
+
+void GenerationController::regenerate_map(int rows, int cols) {
+  delete model_;
+  model_ = new GenerationModel(rows, cols);
+  model_->generate_maze();
 }
 
-GenerationController::~GenerationController() { delete model_; }
+void GenerationController::save_map(const std::string& filename) const {
+  model_->save_maze_to_file(filename);
+}
 }  // namespace s21

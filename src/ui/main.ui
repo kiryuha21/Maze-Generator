@@ -15,7 +15,7 @@
     <property name="default-width">800</property>
     <property name="default-height">800</property>
     <child>
-      <!-- n-columns=4 n-rows=5 -->
+      <!-- n-columns=4 n-rows=6 -->
       <object class="GtkGrid">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
@@ -173,6 +173,24 @@
           <packing>
             <property name="left-attach">0</property>
             <property name="top-attach">4</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="filename_entry">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="halign">center</property>
+            <property name="valign">center</property>
+            <property name="vexpand">True</property>
+            <property name="placeholder-text" translatable="yes">Enter filename for map saving</property>
+            <style>
+              <class name="filename-entry"/>
+            </style>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">5</property>
+            <property name="width">4</property>
           </packing>
         </child>
       </object>

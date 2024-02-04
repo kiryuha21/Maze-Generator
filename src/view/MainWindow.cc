@@ -10,6 +10,7 @@ MainWindow::MainWindow(BaseObjectType *obj,
 
   builder_->get_widget("maze_rows_entry", maze_rows_entry_);
   builder_->get_widget("maze_columns_entry", maze_columns_entry_);
+  builder_->get_widget("filename_entry", filename_entry_);
   builder_->get_widget("find_route_button", find_route_button_);
   builder_->get_widget("generate_map_button", generate_map_button_);
 
@@ -27,7 +28,44 @@ MainWindow::~MainWindow() { delete controller_; }
 
 void MainWindow::on_find_route_button_clicked() const noexcept {}
 
-void MainWindow::on_generate_map_button_clicked() const noexcept {}
+int MainWindow::validate_number(const std::string &str) {
+  size_t ptr = 0;
+  int res = 0;
+
+  try {
+    res = std::stoi(str, &ptr);
+  } catch (std::invalid_argument &e) {
+    throw std::logic_error("Conversion error!");
+  }
+  if (ptr != str.size()) {
+    throw std::logic_error("Conversion error!");
+  }
+
+  return res;
+}
+
+void MainWindow::on_generate_map_button_clicked() const noexcept {
+  std::string str_rows = maze_rows_entry_->get_text();
+  std::string str_cols = maze_columns_entry_->get_text();
+  std::string filename = filename_entry_->get_text();
+  if (filename.empty()) {
+    error_label_->set_text("Empty filename!");
+    return;
+  }
+
+  int rows = 0, cols = 0;
+  try {
+    rows = validate_number(str_rows);
+    cols = validate_number(str_cols);
+  } catch (std::logic_error &e) {
+    error_label_->set_text(e.what());
+    return;
+  }
+
+  controller_->regenerate_map(rows, cols);
+  controller_->save_map(filename);
+  error_label_->set_text("");
+}
 
 bool MainWindow::draw_file(const Cairo::RefPtr<Cairo::Context> &cairo) {
   std::string filepath = file_selector_->get_filename();

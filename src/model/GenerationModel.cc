@@ -10,9 +10,6 @@ GenerationModel::GenerationModel(int rows, int cols)
           rows, std::vector<int>(cols, kEmptyCell))),
       maze_(std::vector<std::vector<int>>(rows,
                                           std::vector<int>(cols, kEmptyCell))) {
-  if (std::min(rows, cols) <= 0 || std::max(rows, cols) > 50) {
-    throw std::out_of_range("Rows, cols must be in [1; 50]");
-  }
   validate_walls();
 };
 
@@ -98,7 +95,7 @@ void GenerationModel::generate_maze() {
 
 void GenerationModel::save_maze_to_file(const std::string &filepath) const {
   std::fstream fs(filepath, std::ios::out);
-  fs << rows_ << ' ' << cols_;
+  fs << rows_ << ' ' << cols_ << "\n\n";
   for (auto &vec : vertical_walls_) {
     for (auto &cell : vec) {
       fs << cell << ' ';

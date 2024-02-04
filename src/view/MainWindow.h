@@ -18,6 +18,7 @@ class MainWindow : public Gtk::Window {
   void on_find_route_button_clicked() const noexcept;
   void on_generate_map_button_clicked() const noexcept;
   bool draw_file(const Cairo::RefPtr<Cairo::Context>& cairo);
+  static int validate_number(const std::string& str);
 
   Glib::RefPtr<Gtk::Builder> builder_;
 
@@ -27,6 +28,7 @@ class MainWindow : public Gtk::Window {
 
   Gtk::Entry* maze_rows_entry_ = nullptr;
   Gtk::Entry* maze_columns_entry_ = nullptr;
+  Gtk::Entry* filename_entry_ = nullptr;
   Gtk::Button* find_route_button_ = nullptr;
   Gtk::Button* generate_map_button_ = nullptr;
 
