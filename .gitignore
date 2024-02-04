@@ -1,3 +1,7 @@
+# CLion generics
+cmake-build-debug
+.idea
+
 # Prerequisites
 *.d
 
