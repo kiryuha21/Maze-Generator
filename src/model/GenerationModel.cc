@@ -93,7 +93,27 @@ void GenerationModel::generate_maze() {
     }
   }
 
-  validate_walls(); 
+  validate_walls();
+}
+
+void GenerationModel::save_maze_to_file(const std::string &filepath) const {
+  std::fstream fs(filepath, std::ios::out);
+  fs << rows_ << ' ' << cols_;
+  for (auto &vec : vertical_walls_) {
+    for (auto &cell : vec) {
+      fs << cell << ' ';
+    }
+    fs << '\n';
+  }
+
+  fs << '\n';
+
+  for (auto &vec : horizontal_walls_) {
+    for (auto &cell : vec) {
+      fs << cell << ' ';
+    }
+    fs << '\n';
+  }
 }
 
 }  // namespace s21

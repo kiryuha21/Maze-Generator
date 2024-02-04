@@ -2,6 +2,7 @@
 #define INC_3D_VIEWER_TEMPLATE_GENERATIONMODEL_H
 
 #include <chrono>
+#include <fstream>
 #include <random>
 #include <stdexcept>
 #include <vector>
@@ -11,6 +12,7 @@ class GenerationModel {
  public:
   GenerationModel(int rows, int cols);
   void generate_maze();
+  void save_maze_to_file(const std::string &filepath) const;
 
  private:
   int rows_, cols_;
