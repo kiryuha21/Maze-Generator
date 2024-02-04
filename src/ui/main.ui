@@ -13,9 +13,8 @@
     <property name="can-focus">False</property>
     <property name="window-position">center</property>
     <property name="default-width">800</property>
-    <property name="default-height">800</property>
     <child>
-      <!-- n-columns=4 n-rows=6 -->
+      <!-- n-columns=4 n-rows=9 -->
       <object class="GtkGrid">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
@@ -110,20 +109,20 @@
           </packing>
         </child>
         <child>
-          <object class="GtkButton" id="find_route_button">
-            <property name="label" translatable="yes">Find route</property>
+          <object class="GtkEntry" id="maze_rows_entry">
             <property name="visible">True</property>
             <property name="can-focus">True</property>
-            <property name="receives-default">True</property>
             <property name="valign">start</property>
             <property name="vexpand">True</property>
+            <property name="placeholder-text" translatable="yes">Maze rows</property>
             <style>
-              <class name="action-button"/>
+              <class name="action-entry"/>
+              <class name="action-common"/>
             </style>
           </object>
           <packing>
-            <property name="left-attach">3</property>
-            <property name="top-attach">4</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">5</property>
           </packing>
         </child>
         <child>
@@ -134,12 +133,13 @@
             <property name="vexpand">True</property>
             <property name="placeholder-text" translatable="yes">Maze columns</property>
             <style>
-              <class name="action-button"/>
+              <class name="action-entry"/>
+              <class name="action-common"/>
             </style>
           </object>
           <packing>
             <property name="left-attach">1</property>
-            <property name="top-attach">4</property>
+            <property name="top-attach">5</property>
           </packing>
         </child>
         <child>
@@ -152,27 +152,13 @@
             <property name="vexpand">True</property>
             <style>
               <class name="action-button"/>
+              <class name="action-common"/>
             </style>
           </object>
           <packing>
             <property name="left-attach">2</property>
-            <property name="top-attach">4</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkEntry" id="maze_rows_entry">
-            <property name="visible">True</property>
-            <property name="can-focus">True</property>
-            <property name="valign">start</property>
-            <property name="vexpand">True</property>
-            <property name="placeholder-text" translatable="yes">Maze rows</property>
-            <style>
-              <class name="action-button"/>
-            </style>
-          </object>
-          <packing>
-            <property name="left-attach">0</property>
-            <property name="top-attach">4</property>
+            <property name="top-attach">5</property>
+            <property name="width">2</property>
           </packing>
         </child>
         <child>
@@ -185,11 +171,108 @@
             <property name="placeholder-text" translatable="yes">Enter filename for map saving</property>
             <style>
               <class name="filename-entry"/>
+              <class name="action-common"/>
             </style>
           </object>
           <packing>
             <property name="left-attach">0</property>
-            <property name="top-attach">5</property>
+            <property name="top-attach">4</property>
+            <property name="width">4</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="end_cell_x_entry">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="placeholder-text" translatable="yes">end cell x</property>
+            <style>
+              <class name="action-entry"/>
+              <class name="action-common"/>
+            </style>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">8</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="start_cell_x_entry">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="placeholder-text" translatable="yes">start cell x</property>
+            <style>
+              <class name="action-entry"/>
+              <class name="action-common"/>
+            </style>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">7</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="end_cell_y_entry">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="placeholder-text" translatable="yes">end cell y</property>
+            <style>
+              <class name="action-entry"/>
+              <class name="action-common"/>
+            </style>
+          </object>
+          <packing>
+            <property name="left-attach">1</property>
+            <property name="top-attach">8</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="start_cell_y_entry">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="placeholder-text" translatable="yes">start cell y</property>
+            <style>
+              <class name="action-entry"/>
+              <class name="action-common"/>
+            </style>
+          </object>
+          <packing>
+            <property name="left-attach">1</property>
+            <property name="top-attach">7</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="find_route_button">
+            <property name="label" translatable="yes">Find route</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <property name="valign">center</property>
+            <property name="vexpand">True</property>
+            <style>
+              <class name="action-button"/>
+              <class name="action-common"/>
+            </style>
+          </object>
+          <packing>
+            <property name="left-attach">2</property>
+            <property name="top-attach">7</property>
+            <property name="width">2</property>
+            <property name="height">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="height-request">20</property>
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">6</property>
             <property name="width">4</property>
           </packing>
         </child>

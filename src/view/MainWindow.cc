@@ -8,11 +8,16 @@ MainWindow::MainWindow(BaseObjectType *obj,
   builder_->get_widget("file_selector", file_selector_);
   builder_->get_widget("maze_drawing_area", maze_drawing_area_);
 
+  builder_->get_widget("filename_entry", filename_entry_);
   builder_->get_widget("maze_rows_entry", maze_rows_entry_);
   builder_->get_widget("maze_columns_entry", maze_columns_entry_);
-  builder_->get_widget("filename_entry", filename_entry_);
-  builder_->get_widget("find_route_button", find_route_button_);
   builder_->get_widget("generate_map_button", generate_map_button_);
+
+  builder_->get_widget("start_cell_x_entry", start_cell_x_entry_);
+  builder_->get_widget("start_cell_y_entry", start_cell_y_entry_);
+  builder_->get_widget("end_cell_x_entry", end_cell_x_entry_);
+  builder_->get_widget("end_cell_y_entry", end_cell_y_entry_);
+  builder_->get_widget("find_route_button", find_route_button_);
 
   find_route_button_->signal_clicked().connect(
       sigc::mem_fun(*this, &MainWindow::on_find_route_button_clicked));
@@ -64,7 +69,6 @@ void MainWindow::on_generate_map_button_clicked() const noexcept {
 
   controller_->regenerate_map(rows, cols);
   controller_->save_map(filename);
-  error_label_->set_text("");
 }
 
 bool MainWindow::draw_file(const Cairo::RefPtr<Cairo::Context> &cairo) {
@@ -124,6 +128,7 @@ bool MainWindow::draw_file(const Cairo::RefPtr<Cairo::Context> &cairo) {
   }
   cairo->stroke();
 
+  error_label_->set_text("");
   return true;
 }
 
