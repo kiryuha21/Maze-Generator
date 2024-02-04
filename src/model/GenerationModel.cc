@@ -8,8 +8,6 @@ GenerationModel::GenerationModel(int rows, int cols)
           rows, std::vector<int>(cols, kEmptyCell))),
       vertical_walls_(std::vector<std::vector<int>>(
           rows, std::vector<int>(cols, kEmptyCell))),
-      maze_(std::vector<std::vector<int>>(rows,
-                                          std::vector<int>(cols, kEmptyCell))),
       line_(std::vector<int>(cols, kEmptyCell)) {
   validate_walls();
 };
@@ -53,35 +51,22 @@ void GenerationModel::build_vertical_walls(int row) {
   validate_walls();
 }
 
-int GenerationModel::count(int elem) const {
-  int res = 0;
-  for (auto &i : line_) {
-    if (i == elem) {
-      ++res;
-    }
-  }
-  return res;
-}
-
-int GenerationModel::count_horizontal_walls(int elem, int row) const {
-  int res = 0;
-  for (int i = 0; i < cols_; ++i) {
-    if (line_[i] == elem && horizontal_walls_[row][i] == kEmptyCell) {
-      ++res;
-    }
-  }
-  return res;
-}
-
 void GenerationModel::build_horizontal_walls(int row) {
   for (int i = 0; i < cols_; ++i) {
-    if (random_chance(kWallSpawningChance) && count(line_[i]) != 1) {
+    if (random_chance(kWallSpawningChance)) {
       horizontal_walls_[row][i] = kWallCell;
     }
   }
 
   for (int i = 0; i < cols_; ++i) {
-    if (count_horizontal_walls(line_[i], row) == 0) {
+    bool no_exit = true;
+    for (int j = 0; j < cols_ && no_exit; ++j) {
+      if (line_[i] == line_[j] && horizontal_walls_[row][j] == kEmptyCell) {
+        no_exit = false;
+      }
+    }
+
+    if (no_exit) {
       horizontal_walls_[row][i] = kEmptyCell;
     }
   }
