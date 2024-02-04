@@ -71,19 +71,6 @@
           </packing>
         </child>
         <child>
-          <object class="GtkDrawingArea" id="maze_drawing_area">
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <property name="hexpand">True</property>
-            <property name="vexpand">True</property>
-          </object>
-          <packing>
-            <property name="left-attach">0</property>
-            <property name="top-attach">2</property>
-            <property name="width">4</property>
-          </packing>
-        </child>
-        <child>
           <object class="GtkButton" id="load_map_button">
             <property name="label" translatable="yes">Load map</property>
             <property name="visible">True</property>
@@ -141,6 +128,19 @@
           <packing>
             <property name="left-attach">0</property>
             <property name="top-attach">3</property>
+            <property name="width">4</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkDrawingArea" id="maze_drawing_area">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="halign">center</property>
+            <property name="valign">center</property>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">2</property>
             <property name="width">4</property>
           </packing>
         </child>

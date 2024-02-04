@@ -21,5 +21,5 @@ add_executable(app
 add_executable(test
         src/tests/tests_main.cc)
 
-target_link_libraries(app ${GTKMM_LIBRARIES} boost_iostreams)
-target_link_libraries(test gtest boost_iostreams)
+target_link_libraries(app ${GTKMM_LIBRARIES})
+target_link_libraries(test gtest)

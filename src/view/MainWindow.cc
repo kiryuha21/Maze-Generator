@@ -21,6 +21,9 @@ MainWindow::MainWindow(BaseObjectType *obj,
   maze_drawing_area_->signal_draw().connect(
       sigc::mem_fun(*this, &MainWindow::draw_file));
 
+  maze_drawing_area_->property_width_request().set_value(500);
+  maze_drawing_area_->property_height_request().set_value(500);
+
   controller_ = new GenerationController;
 }
 
