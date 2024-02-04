@@ -97,13 +97,15 @@ bool MainWindow::draw_file(const Cairo::RefPtr<Cairo::Context> &cairo) {
                    vertical ? height - kCairoOffset : kCairoOffset);
     cairo->move_to(kCairoOffset, kCairoOffset);
 
-    int x_step = (width - kCairoOffset * 2) / cols;
-    int y_step = (height - kCairoOffset * 2) / rows;
+    double x_step = (width - kCairoOffset * 2) / (double)cols;
+    double y_step = (height - kCairoOffset * 2) / (double)rows;
 
     for (int i = 0; i < rows; ++i) {
-      int y = i * y_step + (vertical ? kCairoOffset : kCairoOffset + y_step);
+      int y = std::round(i * y_step +
+                         (vertical ? kCairoOffset : kCairoOffset + y_step));
       for (int j = 0; j < cols; ++j) {
-        int x = j * x_step + (vertical ? x_step + kCairoOffset : kCairoOffset);
+        int x = std::round(j * x_step +
+                           (vertical ? x_step + kCairoOffset : kCairoOffset));
         cairo->move_to(x, y);
 
         int wall;
