@@ -62,6 +62,9 @@ void MainWindow::on_generate_map_button_clicked() const noexcept {
   try {
     rows = validate_number(str_rows);
     cols = validate_number(str_cols);
+    if (rows < 1 || rows > 50 || cols < 1 || cols > 50) {
+      throw std::logic_error("Invalid range");
+    }
   } catch (std::logic_error &e) {
     error_label_->set_text(e.what());
     return;
@@ -85,46 +88,44 @@ bool MainWindow::draw_file(const Cairo::RefPtr<Cairo::Context> &cairo) {
   cairo->set_source_rgb(0, 0, 0);
 
   std::fstream fs(filepath, std::ios::in);
-  int rows, cols;
-  fs >> rows >> cols;
+  fs.exceptions(std::fstream::badbit);
 
-  // 5 - offset, change to constant while moving business-logic to model
-  cairo->move_to(5, 5);
-  cairo->line_to(5, height - 5);
-  cairo->move_to(5, 5);
+  int rows = 0, cols = 0;
+  auto draw_walls = [&](bool vertical) {
+    cairo->move_to(kCairoOffset, kCairoOffset);
+    cairo->line_to(vertical ? kCairoOffset : width - kCairoOffset,
+                   vertical ? height - kCairoOffset : kCairoOffset);
+    cairo->move_to(kCairoOffset, kCairoOffset);
 
-  int x_step = (width - 10) / cols;
-  int y_step = (height - 10) / rows;
+    int x_step = (width - kCairoOffset * 2) / cols;
+    int y_step = (height - kCairoOffset * 2) / rows;
 
-  for (int i = 0; i < rows; ++i) {
-    int y = i * y_step + 5;
-    for (int j = 0; j < cols; ++j) {
-      int x = j * x_step + x_step + 5;
-      cairo->move_to(x, y);
+    for (int i = 0; i < rows; ++i) {
+      int y = i * y_step + (vertical ? kCairoOffset : kCairoOffset + y_step);
+      for (int j = 0; j < cols; ++j) {
+        int x = j * x_step + (vertical ? x_step + kCairoOffset : kCairoOffset);
+        cairo->move_to(x, y);
 
-      int wall;
-      fs >> wall;
-      if (wall) {
-        cairo->line_to(x, y + y_step);
+        int wall;
+        fs >> wall;
+        if (wall) {
+          if (vertical) {
+            cairo->line_to(x, y + y_step);
+          } else {
+            cairo->line_to(x + x_step, y);
+          }
+        }
       }
     }
-  }
+  };
 
-  cairo->move_to(5, 5);
-  cairo->line_to(width - 5, 5);
-  cairo->move_to(5, 5);
-  for (int i = 0; i < rows; ++i) {
-    int y = i * y_step + y_step + 5;
-    for (int j = 0; j < cols; ++j) {
-      int x = j * x_step + 5;
-      cairo->move_to(x, y);
-
-      int wall;
-      fs >> wall;
-      if (wall) {
-        cairo->line_to(x + x_step, y);
-      }
-    }
+  try {
+    fs >> rows >> cols;
+    draw_walls(true);
+    draw_walls(false);
+  } catch (const std::fstream::failure &e) {
+    error_label_->set_text(e.what());
+    return true;
   }
   cairo->stroke();
 

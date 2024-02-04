@@ -15,6 +15,8 @@ class MainWindow : public Gtk::Window {
   ~MainWindow() override;
 
  private:
+  static constexpr auto kCairoOffset = 5;
+
   void on_find_route_button_clicked() const noexcept;
   void on_generate_map_button_clicked() const noexcept;
   bool draw_file(const Cairo::RefPtr<Cairo::Context>& cairo);
