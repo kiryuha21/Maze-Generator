@@ -25,7 +25,8 @@ class MainWindow : public Gtk::Window {
   Gtk::FileChooserButton* file_selector_ = nullptr;
   Gtk::DrawingArea* maze_drawing_area_ = nullptr;
 
-  Gtk::Entry* maze_size_entry_ = nullptr;
+  Gtk::Entry* maze_rows_entry_ = nullptr;
+  Gtk::Entry* maze_columns_entry_ = nullptr;
   Gtk::Button* find_route_button_ = nullptr;
   Gtk::Button* generate_map_button_ = nullptr;
 

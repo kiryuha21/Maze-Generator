@@ -110,23 +110,6 @@
           </packing>
         </child>
         <child>
-          <object class="GtkButton" id="generate_map_button">
-            <property name="label" translatable="yes">Generate map</property>
-            <property name="visible">True</property>
-            <property name="can-focus">True</property>
-            <property name="receives-default">True</property>
-            <property name="valign">start</property>
-            <property name="vexpand">True</property>
-            <style>
-              <class name="action-button"/>
-            </style>
-          </object>
-          <packing>
-            <property name="left-attach">0</property>
-            <property name="top-attach">4</property>
-          </packing>
-        </child>
-        <child>
           <object class="GtkButton" id="find_route_button">
             <property name="label" translatable="yes">Find route</property>
             <property name="visible">True</property>
@@ -144,12 +127,12 @@
           </packing>
         </child>
         <child>
-          <object class="GtkEntry" id="maze_size_entry">
+          <object class="GtkEntry" id="maze_columns_entry">
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="valign">start</property>
             <property name="vexpand">True</property>
-            <property name="placeholder-text" translatable="yes">Maze size</property>
+            <property name="placeholder-text" translatable="yes">Maze columns</property>
             <style>
               <class name="action-button"/>
             </style>
@@ -157,7 +140,39 @@
           <packing>
             <property name="left-attach">1</property>
             <property name="top-attach">4</property>
-            <property name="width">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="generate_map_button">
+            <property name="label" translatable="yes">Generate map</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <property name="valign">start</property>
+            <property name="vexpand">True</property>
+            <style>
+              <class name="action-button"/>
+            </style>
+          </object>
+          <packing>
+            <property name="left-attach">2</property>
+            <property name="top-attach">4</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="maze_rows_entry">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="valign">start</property>
+            <property name="vexpand">True</property>
+            <property name="placeholder-text" translatable="yes">Maze rows</property>
+            <style>
+              <class name="action-button"/>
+            </style>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">4</property>
           </packing>
         </child>
       </object>

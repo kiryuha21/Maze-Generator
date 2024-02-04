@@ -8,7 +8,8 @@ MainWindow::MainWindow(BaseObjectType *obj,
   builder_->get_widget("file_selector", file_selector_);
   builder_->get_widget("maze_drawing_area", maze_drawing_area_);
 
-  builder_->get_widget("maze_size_entry", maze_size_entry_);
+  builder_->get_widget("maze_rows_entry", maze_rows_entry_);
+  builder_->get_widget("maze_columns_entry", maze_columns_entry_);
   builder_->get_widget("find_route_button", find_route_button_);
   builder_->get_widget("generate_map_button", generate_map_button_);
 
