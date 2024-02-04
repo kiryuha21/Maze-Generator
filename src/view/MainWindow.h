@@ -15,7 +15,6 @@ class MainWindow : public Gtk::Window {
   ~MainWindow() override;
 
  private:
-  void on_load_map_button_clicked() const noexcept;
   void on_find_route_button_clicked() const noexcept;
   void on_generate_map_button_clicked() const noexcept;
   bool draw_file(const Cairo::RefPtr<Cairo::Context>& cairo);
@@ -26,7 +25,7 @@ class MainWindow : public Gtk::Window {
   Gtk::FileChooserButton* file_selector_ = nullptr;
   Gtk::DrawingArea* maze_drawing_area_ = nullptr;
 
-  Gtk::Button* load_map_button_ = nullptr;
+  Gtk::Entry* maze_size_entry_ = nullptr;
   Gtk::Button* find_route_button_ = nullptr;
   Gtk::Button* generate_map_button_ = nullptr;
 

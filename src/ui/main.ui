@@ -27,6 +27,8 @@
           <object class="GtkLabel" id="file_label">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
+            <property name="halign">center</property>
+            <property name="valign">center</property>
             <property name="label" translatable="yes">Map file:</property>
             <style>
               <class name="option-contents"/>
@@ -42,6 +44,8 @@
           <object class="GtkFileChooserButton" id="file_selector">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
+            <property name="valign">center</property>
+            <property name="hexpand">True</property>
             <property name="filter">object_files_filter</property>
             <property name="title" translatable="yes"/>
             <style>
@@ -58,6 +62,8 @@
           <object class="GtkLabel" id="maze_label">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
+            <property name="halign">center</property>
+            <property name="valign">center</property>
             <property name="label" translatable="yes">Maze Generator</property>
             <property name="justify">center</property>
             <style>
@@ -68,53 +74,6 @@
             <property name="left-attach">0</property>
             <property name="top-attach">0</property>
             <property name="width">4</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="load_map_button">
-            <property name="label" translatable="yes">Load map</property>
-            <property name="visible">True</property>
-            <property name="can-focus">True</property>
-            <property name="receives-default">True</property>
-            <property name="halign">center</property>
-            <style>
-              <class name="action-button"/>
-            </style>
-          </object>
-          <packing>
-            <property name="left-attach">0</property>
-            <property name="top-attach">4</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="find_route_button">
-            <property name="label" translatable="yes">Find route</property>
-            <property name="visible">True</property>
-            <property name="can-focus">True</property>
-            <property name="receives-default">True</property>
-            <style>
-              <class name="action-button"/>
-            </style>
-          </object>
-          <packing>
-            <property name="left-attach">1</property>
-            <property name="top-attach">4</property>
-            <property name="width">2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="generate_map_button">
-            <property name="label" translatable="yes">Generate map</property>
-            <property name="visible">True</property>
-            <property name="can-focus">True</property>
-            <property name="receives-default">True</property>
-            <style>
-              <class name="action-button"/>
-            </style>
-          </object>
-          <packing>
-            <property name="left-attach">3</property>
-            <property name="top-attach">4</property>
           </packing>
         </child>
         <child>
@@ -133,15 +92,72 @@
         </child>
         <child>
           <object class="GtkDrawingArea" id="maze_drawing_area">
+            <property name="width-request">500</property>
+            <property name="height-request">500</property>
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="halign">center</property>
             <property name="valign">center</property>
+            <property name="vexpand">True</property>
+            <style>
+              <class name="drawing-area"/>
+            </style>
           </object>
           <packing>
             <property name="left-attach">0</property>
             <property name="top-attach">2</property>
             <property name="width">4</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="generate_map_button">
+            <property name="label" translatable="yes">Generate map</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <property name="valign">start</property>
+            <property name="vexpand">True</property>
+            <style>
+              <class name="action-button"/>
+            </style>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">4</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="find_route_button">
+            <property name="label" translatable="yes">Find route</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <property name="valign">start</property>
+            <property name="vexpand">True</property>
+            <style>
+              <class name="action-button"/>
+            </style>
+          </object>
+          <packing>
+            <property name="left-attach">3</property>
+            <property name="top-attach">4</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="maze_size_entry">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="valign">start</property>
+            <property name="vexpand">True</property>
+            <property name="placeholder-text" translatable="yes">Maze size</property>
+            <style>
+              <class name="action-button"/>
+            </style>
+          </object>
+          <packing>
+            <property name="left-attach">1</property>
+            <property name="top-attach">4</property>
+            <property name="width">2</property>
           </packing>
         </child>
       </object>

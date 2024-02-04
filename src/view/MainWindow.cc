@@ -8,12 +8,10 @@ MainWindow::MainWindow(BaseObjectType *obj,
   builder_->get_widget("file_selector", file_selector_);
   builder_->get_widget("maze_drawing_area", maze_drawing_area_);
 
-  builder_->get_widget("load_map_button", load_map_button_);
+  builder_->get_widget("maze_size_entry", maze_size_entry_);
   builder_->get_widget("find_route_button", find_route_button_);
   builder_->get_widget("generate_map_button", generate_map_button_);
 
-  load_map_button_->signal_clicked().connect(
-      sigc::mem_fun(*this, &MainWindow::on_load_map_button_clicked));
   find_route_button_->signal_clicked().connect(
       sigc::mem_fun(*this, &MainWindow::on_find_route_button_clicked));
   generate_map_button_->signal_clicked().connect(
@@ -21,17 +19,10 @@ MainWindow::MainWindow(BaseObjectType *obj,
   maze_drawing_area_->signal_draw().connect(
       sigc::mem_fun(*this, &MainWindow::draw_file));
 
-  maze_drawing_area_->property_width_request().set_value(500);
-  maze_drawing_area_->property_height_request().set_value(500);
-
   controller_ = new GenerationController;
 }
 
 MainWindow::~MainWindow() { delete controller_; }
-
-void MainWindow::on_load_map_button_clicked() const noexcept {
-  maze_drawing_area_->queue_draw();
-}
 
 void MainWindow::on_find_route_button_clicked() const noexcept {}
 
