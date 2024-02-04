@@ -9,7 +9,8 @@ GenerationModel::GenerationModel(int rows, int cols)
       vertical_walls_(std::vector<std::vector<int>>(
           rows, std::vector<int>(cols, kEmptyCell))),
       maze_(std::vector<std::vector<int>>(rows,
-                                          std::vector<int>(cols, kEmptyCell))) {
+                                          std::vector<int>(cols, kEmptyCell))),
+      line_(std::vector<int>(cols, kEmptyCell)) {
   validate_walls();
 };
 
@@ -28,8 +29,8 @@ bool GenerationModel::random_chance(unsigned long chance) noexcept {
   return rng_() % 100 < chance;
 }
 
-void GenerationModel::join_sets(int row) {
-  for (auto &cell : maze_[row]) {
+void GenerationModel::join_sets() {
+  for (auto &cell : line_) {
     if (cell == kEmptyCell) {
       cell = set_number_++;
     }
@@ -38,35 +39,49 @@ void GenerationModel::join_sets(int row) {
 
 void GenerationModel::build_vertical_walls(int row) {
   for (int i = 0; i < cols_ - 1; ++i) {
-    if (random_chance(kWallSpawningChance) ||
-        maze_[row][i] == maze_[row][i + 1]) {
+    if (random_chance(kWallSpawningChance) || line_[i] == line_[i + 1]) {
       vertical_walls_[row][i] = kWallCell;
     } else {
-      int set_to_delete = maze_[row][i + 1];
-      for (int j = i + 1; j < cols_ && maze_[row][j] == set_to_delete; ++j) {
-        maze_[row][j] = maze_[row][i + 1];
+      int set_to_delete = line_[i + 1];
+      for (int j = 0; j < cols_; ++j) {
+        if (line_[j] == set_to_delete) {
+          line_[j] = line_[i];
+        }
       }
     }
   }
+  validate_walls();
+}
+
+int GenerationModel::count(int elem) const {
+  int res = 0;
+  for (auto &i : line_) {
+    if (i == elem) {
+      ++res;
+    }
+  }
+  return res;
+}
+
+int GenerationModel::count_horizontal_walls(int elem, int row) const {
+  int res = 0;
+  for (int i = 0; i < cols_; ++i) {
+    if (line_[i] == elem && horizontal_walls_[row][i] == kEmptyCell) {
+      ++res;
+    }
+  }
+  return res;
 }
 
 void GenerationModel::build_horizontal_walls(int row) {
   for (int i = 0; i < cols_; ++i) {
-    if (random_chance(kWallSpawningChance)) {
+    if (random_chance(kWallSpawningChance) && count(line_[i]) != 1) {
       horizontal_walls_[row][i] = kWallCell;
     }
   }
 
   for (int i = 0; i < cols_; ++i) {
-    bool no_exit = true;
-    for (int j = 0; j < cols_ && no_exit; ++j) {
-      if (maze_[row][i] == maze_[row][j] &&
-          horizontal_walls_[row][j] == kEmptyCell) {
-        no_exit = false;
-      }
-    }
-
-    if (no_exit) {
+    if (count_horizontal_walls(line_[i], row) == 0) {
       horizontal_walls_[row][i] = kEmptyCell;
     }
   }
@@ -74,22 +89,23 @@ void GenerationModel::build_horizontal_walls(int row) {
 
 void GenerationModel::prepare_next_row(int row) {
   for (int i = 0; i < cols_; ++i) {
-    if (horizontal_walls_[row][i] == kEmptyCell) {
-      maze_[row + 1][i] = maze_[row][i];
+    if (horizontal_walls_[row][i] == kWallCell) {
+      line_[i] = kEmptyCell;
     }
   }
 }
 
 void GenerationModel::generate_maze() {
-  for (int i = 0; i < rows_; ++i) {
-    join_sets(i);
+  for (int i = 0; i < rows_ - 1; ++i) {
+    join_sets();
     build_vertical_walls(i);
     build_horizontal_walls(i);
-    if (i != rows_ - 1) {
-      prepare_next_row(i);
-    }
+    prepare_next_row(i);
   }
 
+  join_sets();
+  build_vertical_walls(rows_ - 1);
+  fix_last_row();
   validate_walls();
 }
 
@@ -110,6 +126,20 @@ void GenerationModel::save_maze_to_file(const std::string &filepath) const {
       fs << cell << ' ';
     }
     fs << '\n';
+  }
+}
+
+void GenerationModel::fix_last_row() {
+  for (int i = 0; i < cols_ - 1; ++i) {
+    if (line_[i] != line_[i + 1]) {
+      vertical_walls_[rows_ - 1][i] = kEmptyCell;
+      int set_to_delete = line_[i + 1];
+      for (int j = 0; j < cols_; ++j) {
+        if (line_[j] == set_to_delete) {
+          line_[j] = line_[i];
+        }
+      }
+    }
   }
 }
 

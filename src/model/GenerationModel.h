@@ -21,18 +21,22 @@ class GenerationModel {
   std::vector<std::vector<int>> horizontal_walls_;
   std::vector<std::vector<int>> vertical_walls_;
   std::vector<std::vector<int>> maze_;
+  std::vector<int> line_;
 
   static constexpr int kEmptyCell = 0;
   static constexpr int kWallCell = 1;
-  static constexpr unsigned long kWallSpawningChance = 30;
+  static constexpr unsigned long kWallSpawningChance = 50;
 
   /* Helpers */
   void validate_walls();
   static bool random_chance(unsigned long chance) noexcept;
-  void join_sets(int row);
+  void join_sets();
   void build_vertical_walls(int row);
   void build_horizontal_walls(int row);
   void prepare_next_row(int row);
+  void fix_last_row();
+  int count(int elem) const;
+  int count_horizontal_walls(int elem, int row) const;
 };
 }  // namespace s21
 
