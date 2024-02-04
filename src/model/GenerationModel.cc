@@ -92,6 +92,8 @@ void GenerationModel::generate_maze() {
       prepare_next_row(i);
     }
   }
+
+  validate_walls(); 
 }
 
 }  // namespace s21
