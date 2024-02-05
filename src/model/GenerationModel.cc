@@ -1,131 +1,131 @@
 #include "GenerationModel.h"
 
 namespace s21 {
-  GenerationModel::GenerationModel(int rows, int cols)
-      : rows_(rows),
-        cols_(cols),
-        horizontal_walls_(std::vector<std::vector<int>>(
-            rows, std::vector<int>(cols, kEmptyCell))),
-        vertical_walls_(std::vector<std::vector<int>>(
-            rows, std::vector<int>(cols, kEmptyCell))),
-        line_(std::vector<int>(cols, kEmptyCell)) {
-    validate_walls();
-  };
+GenerationModel::GenerationModel(int rows, int cols)
+    : rows_(rows),
+      cols_(cols),
+      horizontal_walls_(std::vector<std::vector<int>>(
+          rows, std::vector<int>(cols, kEmptyCell))),
+      vertical_walls_(std::vector<std::vector<int>>(
+          rows, std::vector<int>(cols, kEmptyCell))),
+      line_(std::vector<int>(cols, kEmptyCell)) {
+  validate_walls();
+};
 
-  void GenerationModel::validate_walls() {
-    for (int i = 0; i < rows_; ++i) {
-      vertical_walls_[i][cols_ - 1] = kWallCell;
-    }
-    for (int i = 0; i < cols_; ++i) {
-      horizontal_walls_[rows_ - 1][i] = kWallCell;
+void GenerationModel::validate_walls() {
+  for (int i = 0; i < rows_; ++i) {
+    vertical_walls_[i][cols_ - 1] = kWallCell;
+  }
+  for (int i = 0; i < cols_; ++i) {
+    horizontal_walls_[rows_ - 1][i] = kWallCell;
+  }
+}
+
+bool GenerationModel::random_chance(unsigned long chance) noexcept {
+  static std::random_device rd;
+  static std::mt19937 rng_{rd()};
+  return rng_() % 100 < chance;
+}
+
+void GenerationModel::join_sets() {
+  for (auto &cell : line_) {
+    if (cell == kEmptyCell) {
+      cell = set_number_++;
     }
   }
+}
 
-  bool GenerationModel::random_chance(unsigned long chance) noexcept {
-    static std::random_device rd;
-    static std::mt19937 rng_{rd()};
-    return rng_() % 100 < chance;
-  }
-
-  void GenerationModel::join_sets() {
-    for (auto &cell: line_) {
-      if (cell == kEmptyCell) {
-        cell = set_number_++;
-      }
-    }
-  }
-
-  void GenerationModel::build_vertical_walls(int row) {
-    for (int i = 0; i < cols_ - 1; ++i) {
-      if (random_chance(kWallSpawningChance) || line_[i] == line_[i + 1]) {
-        vertical_walls_[row][i] = kWallCell;
-      } else {
-        int set_to_delete = line_[i + 1];
-        for (int j = 0; j < cols_; ++j) {
-          if (line_[j] == set_to_delete) {
-            line_[j] = line_[i];
-          }
+void GenerationModel::build_vertical_walls(int row) {
+  for (int i = 0; i < cols_ - 1; ++i) {
+    if (random_chance(kWallSpawningChance) || line_[i] == line_[i + 1]) {
+      vertical_walls_[row][i] = kWallCell;
+    } else {
+      int set_to_delete = line_[i + 1];
+      for (int j = 0; j < cols_; ++j) {
+        if (line_[j] == set_to_delete) {
+          line_[j] = line_[i];
         }
       }
     }
-    validate_walls();
   }
+  validate_walls();
+}
 
-  void GenerationModel::build_horizontal_walls(int row) {
-    for (int i = 0; i < cols_; ++i) {
-      if (random_chance(kWallSpawningChance)) {
-        horizontal_walls_[row][i] = kWallCell;
-      }
-    }
-
-    for (int i = 0; i < cols_; ++i) {
-      bool no_exit = true;
-      for (int j = 0; j < cols_ && no_exit; ++j) {
-        if (line_[i] == line_[j] && horizontal_walls_[row][j] == kEmptyCell) {
-          no_exit = false;
-        }
-      }
-
-      if (no_exit) {
-        horizontal_walls_[row][i] = kEmptyCell;
-      }
+void GenerationModel::build_horizontal_walls(int row) {
+  for (int i = 0; i < cols_; ++i) {
+    if (random_chance(kWallSpawningChance)) {
+      horizontal_walls_[row][i] = kWallCell;
     }
   }
 
-  void GenerationModel::prepare_next_row(int row) {
-    for (int i = 0; i < cols_; ++i) {
-      if (horizontal_walls_[row][i] == kWallCell) {
-        line_[i] = kEmptyCell;
+  for (int i = 0; i < cols_; ++i) {
+    bool no_exit = true;
+    for (int j = 0; j < cols_ && no_exit; ++j) {
+      if (line_[i] == line_[j] && horizontal_walls_[row][j] == kEmptyCell) {
+        no_exit = false;
       }
     }
-  }
 
-  void GenerationModel::generate_maze() {
-    for (int i = 0; i < rows_ - 1; ++i) {
-      join_sets();
-      build_vertical_walls(i);
-      build_horizontal_walls(i);
-      prepare_next_row(i);
+    if (no_exit) {
+      horizontal_walls_[row][i] = kEmptyCell;
     }
+  }
+}
 
+void GenerationModel::prepare_next_row(int row) {
+  for (int i = 0; i < cols_; ++i) {
+    if (horizontal_walls_[row][i] == kWallCell) {
+      line_[i] = kEmptyCell;
+    }
+  }
+}
+
+void GenerationModel::generate_maze() {
+  for (int i = 0; i < rows_ - 1; ++i) {
     join_sets();
-    build_vertical_walls(rows_ - 1);
-    fix_last_row();
-    validate_walls();
+    build_vertical_walls(i);
+    build_horizontal_walls(i);
+    prepare_next_row(i);
   }
 
-  void GenerationModel::save_maze_to_file(const std::string &filepath) const {
-    std::fstream fs(filepath, std::ios::out);
-    fs << rows_ << ' ' << cols_ << "\n\n";
-    for (auto &vec: vertical_walls_) {
-      for (auto &cell: vec) {
-        fs << cell << ' ';
-      }
-      fs << '\n';
-    }
+  join_sets();
+  build_vertical_walls(rows_ - 1);
+  fix_last_row();
+  validate_walls();
+}
 
+void GenerationModel::save_maze_to_file(const std::string &filepath) const {
+  std::fstream fs(filepath, std::ios::out);
+  fs << rows_ << ' ' << cols_ << "\n\n";
+  for (auto &vec : vertical_walls_) {
+    for (auto &cell : vec) {
+      fs << cell << ' ';
+    }
     fs << '\n';
-
-    for (auto &vec: horizontal_walls_) {
-      for (auto &cell: vec) {
-        fs << cell << ' ';
-      }
-      fs << '\n';
-    }
   }
 
-  void GenerationModel::fix_last_row() {
-    for (int i = 0; i < cols_ - 1; ++i) {
-      if (line_[i] != line_[i + 1]) {
-        vertical_walls_[rows_ - 1][i] = kEmptyCell;
-        int set_to_delete = line_[i + 1];
-        for (int j = 0; j < cols_; ++j) {
-          if (line_[j] == set_to_delete) {
-            line_[j] = line_[i];
-          }
+  fs << '\n';
+
+  for (auto &vec : horizontal_walls_) {
+    for (auto &cell : vec) {
+      fs << cell << ' ';
+    }
+    fs << '\n';
+  }
+}
+
+void GenerationModel::fix_last_row() {
+  for (int i = 0; i < cols_ - 1; ++i) {
+    if (line_[i] != line_[i + 1]) {
+      vertical_walls_[rows_ - 1][i] = kEmptyCell;
+      int set_to_delete = line_[i + 1];
+      for (int j = 0; j < cols_; ++j) {
+        if (line_[j] == set_to_delete) {
+          line_[j] = line_[i];
         }
       }
     }
   }
+}
 
 }  // namespace s21
