@@ -14,26 +14,28 @@ RouteModel::RouteModel(int xs, int ys, int xe, int ye,
   }
 
   vertical_walls_ =
-      std::vector<std::vector<int>>(rows_, std::vector<int>(cols_));
+      std::vector<std::vector<int>>(rows_ + 1, std::vector<int>(cols_ + 1, 1));
   horizontal_walls_ =
-      std::vector<std::vector<int>>(rows_, std::vector<int>(cols_));
+      std::vector<std::vector<int>>(rows_ + 1, std::vector<int>(cols_ + 1, 1));
 
   for (int i = 0; i < rows_; ++i) {
     for (int j = 0; j < cols_; ++j) {
-      fs >> vertical_walls_[i][j];
+      fs >> vertical_walls_[i + 1][j + 1];
     }
   }
 
   for (int i = 0; i < rows_; ++i) {
     for (int j = 0; j < cols_; ++j) {
-      fs >> horizontal_walls_[i][j];
+      fs >> horizontal_walls_[i + 1][j + 1];
     }
   }
 }
 
 std::vector<std::pair<int, int>> RouteModel::find_route() const {
   std::vector<std::pair<int, int>> res;
-  recursive_search(xs_, ys_, -1, -1, res);
+  if (!recursive_search(xs_, ys_, -1, -1, res)) {
+    throw std::out_of_range("No way found :c");
+  }
   return res;
 }
 
@@ -46,12 +48,7 @@ bool RouteModel::recursive_search(int x, int y, int lx, int ly,
 
   for (auto &direction :
        std::vector<std::pair<int, int>>{{1, 0}, {0, 1}, {-1, 0}, {0, -1}}) {
-    if (direction.first == lx && direction.second == ly) {
-      continue;
-    }
-
-    if (x + direction.first < 1 || x + direction.first > rows_ ||
-        y + direction.first < 1 || y + direction.first > cols_) {
+    if (x + direction.first == lx && y + direction.second == ly) {
       continue;
     }
 
@@ -72,7 +69,7 @@ bool RouteModel::recursive_search(int x, int y, int lx, int ly,
     }
   }
 
-  throw std::out_of_range("No way found :c");
+  return false;
 }
 
 }  // namespace s21
