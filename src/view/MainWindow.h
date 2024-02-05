@@ -17,8 +17,9 @@ class MainWindow : public Gtk::Window {
  private:
   static constexpr auto kCairoOffset = 5;
 
-  void on_find_route_button_clicked() const noexcept;
+  void on_find_route_button_clicked() noexcept;
   void on_generate_map_button_clicked() const noexcept;
+  void on_file_chosen() noexcept;
   bool draw_file(const Cairo::RefPtr<Cairo::Context>& cairo);
   static int validate_number(const std::string& str);
 
@@ -38,6 +39,8 @@ class MainWindow : public Gtk::Window {
   Gtk::Entry* end_cell_x_entry_ = nullptr;
   Gtk::Entry* end_cell_y_entry_ = nullptr;
   Gtk::Button* find_route_button_ = nullptr;
+
+  bool find_path_request = false;
 
   GenerationController* controller_ = nullptr;
 };

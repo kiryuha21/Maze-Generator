@@ -25,13 +25,20 @@ MainWindow::MainWindow(BaseObjectType *obj,
       sigc::mem_fun(*this, &MainWindow::on_generate_map_button_clicked));
   maze_drawing_area_->signal_draw().connect(
       sigc::mem_fun(*this, &MainWindow::draw_file));
+  file_selector_->signal_file_set().connect(
+      sigc::mem_fun(*this, &MainWindow::on_file_chosen));
 
   controller_ = new GenerationController;
 }
 
 MainWindow::~MainWindow() { delete controller_; }
 
-void MainWindow::on_find_route_button_clicked() const noexcept {}
+void MainWindow::on_find_route_button_clicked() noexcept {
+  find_path_request = true;
+  maze_drawing_area_->queue_draw();
+}
+
+void MainWindow::on_file_chosen() noexcept { find_path_request = false; }
 
 int MainWindow::validate_number(const std::string &str) {
   size_t ptr = 0;
@@ -78,7 +85,7 @@ bool MainWindow::draw_file(const Cairo::RefPtr<Cairo::Context> &cairo) {
   std::string filepath = file_selector_->get_filename();
 
   if (filepath.empty()) {
-    return true;
+    return false;
   }
 
   int width = maze_drawing_area_->get_allocated_width();
@@ -127,12 +134,45 @@ bool MainWindow::draw_file(const Cairo::RefPtr<Cairo::Context> &cairo) {
     draw_walls(false);
   } catch (const std::fstream::failure &e) {
     error_label_->set_text(e.what());
-    return true;
+    return false;
   }
   cairo->stroke();
 
+  if (find_path_request) {
+    int xs, ys, xe, ye;
+    std::vector<std::pair<int, int>> path;
+    try {
+      xs = validate_number(start_cell_x_entry_->get_text());
+      ys = validate_number(start_cell_y_entry_->get_text());
+      xe = validate_number(end_cell_x_entry_->get_text());
+      ye = validate_number(end_cell_y_entry_->get_text());
+      path = controller_->find_route(xs, ys, xe, ye, filepath);
+    } catch (std::logic_error &e) {
+      error_label_->set_text(e.what());
+      return false;
+    }
+
+    if (path.size() <= 1) {
+      return false;
+    }
+
+    double x_step = (width - kCairoOffset * 2) / (double)cols;
+    double y_step = (height - kCairoOffset * 2) / (double)rows;
+    double half_step_x = x_step / 2;
+    double half_step_y = y_step / 2;
+    for (size_t i = 0; i < path.size() - 1; ++i) {
+      cairo->move_to(kCairoOffset + path[i].second * x_step - half_step_x,
+                     kCairoOffset + path[i].first * y_step - half_step_y);
+      cairo->line_to(kCairoOffset + path[i + 1].second * x_step - half_step_x,
+                     kCairoOffset + path[i + 1].first * y_step - half_step_y);
+    }
+
+    cairo->set_source_rgb(255, 0, 0);
+    cairo->stroke();
+  }
+
   error_label_->set_text("");
-  return true;
+  return false;
 }
 
 }  // namespace s21

@@ -10,7 +10,12 @@ RouteModel::RouteModel(int xs, int ys, int xe, int ye,
   try {
     fs >> rows_ >> cols_;
   } catch (const std::fstream::failure &e) {
-    throw std::out_of_range("File format error");
+    throw std::logic_error("File format error");
+  }
+
+  if (xs_ < 1 || xs_ > cols_ || xe_ < 1 || xe_ > cols_ || ys_ < 1 ||
+      ys_ > rows_ || ye_ < 1 || ye_ > rows_) {
+    throw std::logic_error("Invalid route cells!");
   }
 
   vertical_walls_ =
@@ -34,7 +39,7 @@ RouteModel::RouteModel(int xs, int ys, int xe, int ye,
 std::vector<std::pair<int, int>> RouteModel::find_route() const {
   std::vector<std::pair<int, int>> res;
   if (!recursive_search(xs_, ys_, -1, -1, res)) {
-    throw std::out_of_range("No way found :c");
+    throw std::logic_error("No way found");
   }
   return res;
 }
