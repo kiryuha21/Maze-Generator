@@ -16,7 +16,9 @@ add_executable(app
         src/controller/GenerationController.cc
         src/controller/GenerationController.h
         src/model/GenerationModel.cc
-        src/model/GenerationModel.h)
+        src/model/GenerationModel.h
+        src/model/RouteModel.h
+        src/model/RouteModel.cc)
 
 add_executable(test
         src/tests/tests_main.cc)
