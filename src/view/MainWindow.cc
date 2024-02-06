@@ -161,10 +161,10 @@ bool MainWindow::draw_file(const Cairo::RefPtr<Cairo::Context> &cairo) {
     double half_step_x = x_step / 2;
     double half_step_y = y_step / 2;
     for (size_t i = 0; i < path.size() - 1; ++i) {
-      cairo->move_to(kCairoOffset + path[i].second * x_step - half_step_x,
-                     kCairoOffset + path[i].first * y_step - half_step_y);
-      cairo->line_to(kCairoOffset + path[i + 1].second * x_step - half_step_x,
-                     kCairoOffset + path[i + 1].first * y_step - half_step_y);
+      cairo->move_to(kCairoOffset + path[i].first * x_step - half_step_x,
+                     kCairoOffset + path[i].second * y_step - half_step_y);
+      cairo->line_to(kCairoOffset + path[i + 1].first * x_step - half_step_x,
+                     kCairoOffset + path[i + 1].second * y_step - half_step_y);
     }
 
     cairo->set_source_rgb(255, 0, 0);
