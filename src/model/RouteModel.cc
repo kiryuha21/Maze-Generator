@@ -46,8 +46,6 @@ std::vector<std::pair<int, int>> RouteModel::find_route() {
 }
 
 void RouteModel::route_bfs() {
-  static const std::vector<std::pair<int, int>> directions = {
-      {0, 1}, {1, 0}, {0, -1}, {-1, 0}};
   std::queue<std::pair<int, int>> bfs;
   bfs.emplace(xs_, ys_);
   int n = 0;
@@ -99,8 +97,6 @@ bool RouteModel::cell_access(int x, int y, int delta_x,
 }
 
 std::vector<std::pair<int, int>> RouteModel::backtrack_route() const noexcept {
-  static const std::vector<std::pair<int, int>> directions = {
-      {0, 1}, {1, 0}, {0, -1}, {-1, 0}};
   int n = maze_[ye_][xe_];
   int x = xe_, y = ye_;
   std::vector<std::pair<int, int>> res;

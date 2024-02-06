@@ -22,6 +22,9 @@ class RouteModel {
   std::vector<std::vector<int>> vertical_walls_;
   std::vector<std::vector<int>> maze_;
 
+  const std::vector<std::pair<int, int>> directions{
+      {0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+
   /* Helpers */
   void route_bfs();
   std::vector<std::pair<int, int>> backtrack_route() const noexcept;
