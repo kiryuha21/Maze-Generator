@@ -2,6 +2,9 @@
 cmake-build-debug
 .idea
 
+# Test generics
+test.mp
+
 # Prerequisites
 *.d
 
